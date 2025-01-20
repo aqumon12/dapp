@@ -1,0 +1,20 @@
+.sendForm {
+	display: flex;
+	gap: 7px;
+}
+
+.sendForm > input {
+	padding: 0.7rem 1rem;
+	border-radius: 10px;
+	border: 1px solid var(--border);
+	background-color: #313131;
+	color: white;
+	flex: 1;
+}
+
+.sendForm>button {
+	color: white;
+	background-color: var(--blue);
+	border-radius: 10px;
+	padding: 0.7rem 2rem;
+}

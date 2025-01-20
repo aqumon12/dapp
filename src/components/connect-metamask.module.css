@@ -1,0 +1,64 @@
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  min-width: 8rem;
+}
+
+.balanceContainer {
+	display: flex;
+	gap: 1.5rem;
+	background-color: var(--card-bg);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	align-items: center;
+}
+
+.balanceContainer > *:first-child {
+	border-right: 2px solid var(--border);
+	padding-right: 1rem;
+}
+
+.btn:hover {
+  background-color: var(--blue);
+} 
+
+.networkSelect {
+	padding: 8px 12px;
+	border-radius: 8px;
+	border: 1px solid #2c2c2c;
+	background-color: #1a1a1a;
+	color: #ffffff;
+	cursor: pointer;
+	width: 100%;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+				0 1px 3px rgba(0, 0, 0, 0.08);
+	transition: all 0.2s ease;
+	font-size: 14px;
+}
+
+.networkSelect:hover {
+	border-color: #3a3a3a;
+	box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 
+				0 2px 4px rgba(0, 0, 0, 0.1);
+	background-color: #222222;
+}
+
+.networkSelect:focus {
+	outline: none;
+	border-color: #4a4a4a;
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* select 옵션 스타일링 */
+.networkSelect option {
+	background-color: #1a1a1a;
+	color: #ffffff;
+	padding: 8px;
+}

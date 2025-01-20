@@ -1,0 +1,29 @@
+.image {
+	object-fit: cover;
+	width: 220px;
+	height: 220px;
+}
+
+.nftItem {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	border-radius: 0.5rem;
+	background-color: var(--card-bg);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	transition: transform 0.2s ease-in-out;
+	text-decoration: none;
+	overflow: hidden;
+}
+
+.content {
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.nftItem:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
