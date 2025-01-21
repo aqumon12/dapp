@@ -15,7 +15,6 @@ async function getNFTData(address: string, tokenId: string) {
 		{
 			method: 'POST',
 			headers: {
-				'Authorization': `Bearer ${session.accessToken}`,
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({

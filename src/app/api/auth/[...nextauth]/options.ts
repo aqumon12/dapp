@@ -54,7 +54,6 @@ export const authOptions: NextAuthOptions = {
 				session.user.address = token.address;
 				session.user.chainId = token.chainId;
 				session.user.balance = token.balance;
-				session.accessToken = token.accessToken;
 			}
 			return session;
 		},
