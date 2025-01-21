@@ -4,10 +4,8 @@ import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
-// nft 목록 조회
 export async function GET() {
 	try {
-		// 세션 체크
 		const session = await getServerSession(authOptions);
 
 		console.log('Session:', session);
@@ -20,7 +18,7 @@ export async function GET() {
 		}
 
 		const chainId = session.user.chainId;
-		const network = Network[chainIds[chainId]?.network_key];
+		const network = Network[chainIds[chainId]?.network_key as keyof typeof Network];
 
 		if (!network) {
 			return NextResponse.json(
@@ -29,13 +27,11 @@ export async function GET() {
 			);
 		}
 
-		// alchemy 인스턴스 생성
 		const alchemy = new Alchemy({
 			apiKey: process.env.ALCHEMY_API_KEY,
 			network: network
 		});
 
-		// 소유한 nft 목록 조회
 		const response = await alchemy.nft.getNftsForOwner(session.user.address);
 		return NextResponse.json(
 			{ message: 'success', nfts: response.ownedNfts },

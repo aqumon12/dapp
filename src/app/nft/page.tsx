@@ -2,13 +2,17 @@ import styles from './page.module.css';
 import { Suspense } from 'react';
 import NFTListSkeleton from '@/components/skeleton/nft-list-skeleton';
 import NFTItem from '@/components/nft-item';
+import { cookies } from 'next/headers';
 import { NFTData } from '@/types/global';
 
 async function getNFTs() {
+	const cookieStore = await cookies();
+	
 	const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-list`, {
 		method: 'GET',
-		cache: 'no-store',
-		credentials: 'include',
+		headers: {
+			Cookie: cookieStore.toString(),
+		},
 	});
 
 	if (!response.ok) {
