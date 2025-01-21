@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-	// JWT 토큰 검증 시도
+	// JWT 토큰 검증
 	try {
 		const token = await getToken({
 			req: request,
@@ -11,25 +11,27 @@ export async function middleware(request: NextRequest) {
 		});
 
 		const { pathname } = request.nextUrl;
-		console.log(token, pathname);
-		// NFT 페이지 접근 시 세션 체크
+
+		// NFT 페이지 접근 시 인증 체크
 		if (pathname.startsWith("/nft")) {
 			if (!token) {
-				return NextResponse.redirect(new URL("/", request.url));
+				const url = new URL("/", request.url);
+				return NextResponse.redirect(url);
 			}
 		}
 
-		// 홈페이지 접근 시 세션 체크
+		// 홈페이지 접근 시 이미 인증된 사용자는 NFT 페이지로 리다이렉트
 		if (pathname === "/" && token) {
-			return NextResponse.redirect(new URL("/nft", request.url));
+			const url = new URL("/nft", request.url);
+			return NextResponse.redirect(url);
 		}
 
 		return NextResponse.next();
 
 	} catch (error) {
-		console.error("Session verification failed:", error);
-
-		return NextResponse.redirect(new URL("/", request.url));
+		console.error("인증 검증 실패:", error);
+		const url = new URL("/", request.url);
+		return NextResponse.redirect(url);
 	}
 }
 
