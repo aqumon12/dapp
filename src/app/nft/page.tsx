@@ -11,9 +11,12 @@ async function getNFTs() {
 	if (!session?.user?.address) {
 		throw new Error('로그인이 필요합니다.');
 	}
-
 	const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-list`, {
 		method: 'POST',
+		headers: {
+			'Authorization': `Bearer ${session.accessToken}`,
+			'Content-Type': 'application/json',
+		},
 		body: JSON.stringify({
 			address: session.user.address,
 			chainId: session.user.chainId,

@@ -14,6 +14,10 @@ async function getNFTData(address: string, tokenId: string) {
 		`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-data`,
 		{
 			method: 'POST',
+			headers: {
+				'Authorization': `Bearer ${session.accessToken}`,
+				'Content-Type': 'application/json',
+			},
 			body: JSON.stringify({
 				address,
 				tokenId,

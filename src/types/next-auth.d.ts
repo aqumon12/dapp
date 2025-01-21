@@ -9,9 +9,10 @@ declare module "next-auth" {
 		chainId: number;
 		balance: number;
 	}
-
+	
 	interface Session {
 		user: User;
+		accessToken: string | unknown;
 	}
 }
 
