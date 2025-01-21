@@ -1,12 +1,12 @@
 import style from "./page.module.css";
 import { notFound } from "next/navigation";
-import { headers } from 'next/headers';
+// import { headers } from 'next/headers';
 import NFTSendForm from "@/components/nft-send-form";
 
 async function getNFTData(address: string, tokenId: string) {
-	const headerList = await headers();
+	// const headerList = await headers();
 	const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-data/${address}/${tokenId}`, {
-		headers: headerList,
+		// headers: headerList,
 		credentials: 'include',
 	});
 
