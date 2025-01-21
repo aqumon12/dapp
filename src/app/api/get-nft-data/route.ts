@@ -1,34 +1,19 @@
 import { Alchemy, Network } from 'alchemy-sdk';
 import chainIds from '@/chainList/chainIds';
-import { getServerSession } from 'next-auth';
-import { NextResponse } from 'next/server'; // 응답 객체
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { NextResponse } from 'next/server';
 
 // nft 상세 조회
-export async function GET(
-	_: Request,
-	{ params }: { params: Promise<{ address: string, tokenId: string }> }
-) {
+export async function POST(request: Request) {
 	try {
-		// 로그인 여부 확인
-		const session = await getServerSession(authOptions);
-		if (!session?.user?.chainId) {
+		const { address, tokenId, chainId } = await request.json();
+		
+		if (!address || !tokenId || !chainId) {
 			return NextResponse.json(
-				{ message: '로그인이 필요합니다.' },
-				{ status: 401 }
-			);
-		}
-
-		const { address, tokenId } = await params;
-
-		if (!address || !tokenId) {
-			return NextResponse.json(
-				{ message: '컨트랙트 주소와 토큰 ID가 필요합니다.' },
+				{ message: '컨트랙트 주소, 토큰 ID, 체인 ID가 필요합니다.' },
 				{ status: 400 }
 			);
 		}
 
-		const chainId = session.user.chainId;
 		const network = Network[chainIds[chainId]?.network_key as keyof typeof Network];
 
 		if (!network) {

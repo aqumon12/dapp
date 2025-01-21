@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
 import style from './nft-send-form.module.css';
+import { revalidateTag } from 'next/cache';
 
 // ERC721 ABI의 transferFrom 함수만 포함
 const ERC721_ABI = [
@@ -56,6 +57,7 @@ export default function NFTSendForm({ contractAddress, tokenId }: {contractAddre
 			await tx.wait();
 
 			alert('NFT가 성공적으로 전송되었습니다!');
+			revalidateTag(`nft-list`);
 			window.location.href = '/nft'; // 전체 페이지 새로고침으로 모달도 함께 닫힘
 			
 		} catch (error) {

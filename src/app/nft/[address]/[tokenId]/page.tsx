@@ -1,22 +1,35 @@
 import style from "./page.module.css";
 import { notFound } from "next/navigation";
-import { cookies } from 'next/headers';
 import NFTSendForm from "@/components/nft-send-form";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 async function getNFTData(address: string, tokenId: string) {
-	const cookieStore = await cookies();
-	const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-data/${address}/${tokenId}`, {
-		headers: {
-			Cookie: cookieStore.toString(),
-		},
-	});
+	const session = await getServerSession(authOptions);
+	if (!session?.user?.address) {
+		throw new Error('로그인이 필요합니다.');
+	}
+
+	const response = await fetch(
+		`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-data`,
+		{
+			method: 'POST',
+			body: JSON.stringify({
+				address,
+				tokenId,
+				chainId: session.user.chainId,
+			}),
+			cache: 'force-cache',
+		}
+	);
 
 	if (!response.ok) {
-		throw new Error('Failed to fetch NFT');
+		const errorData = await response.json();
+		throw new Error(errorData.error || 'NFT 데이터를 불러오는데 실패했습니다.');
 	}
 
 	const data = await response.json();
-
+	
 	if (!data.nft) {
 		notFound();
 	}

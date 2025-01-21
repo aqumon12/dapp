@@ -2,17 +2,26 @@ import styles from './page.module.css';
 import { Suspense } from 'react';
 import NFTListSkeleton from '@/components/skeleton/nft-list-skeleton';
 import NFTItem from '@/components/nft-item';
-import { cookies } from 'next/headers';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { NFTData } from '@/types/global';
 
 async function getNFTs() {
-	const cookieStore = await cookies();
-	
+	const session = await getServerSession(authOptions);
+	if (!session?.user?.address) {
+		throw new Error('로그인이 필요합니다.');
+	}
+
 	const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-list`, {
-		method: 'GET',
-		headers: {
-			Cookie: cookieStore.toString(),
-		},
+		method: 'POST',
+		body: JSON.stringify({
+			address: session.user.address,
+			chainId: session.user.chainId,
+		}),
+		next: {
+			revalidate: 60 * 60,
+			tags: [`nft-list`]
+		}
 	});
 
 	if (!response.ok) {

@@ -1,24 +1,20 @@
 import { Alchemy, Network } from 'alchemy-sdk';
 import chainIds from '@/chainList/chainIds';
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
-export async function GET() {
+// 보유 NFT 목록 조회
+export async function POST(request: Request) {
 	try {
-		const session = await getServerSession(authOptions);
+		const { address, chainId } = await request.json();
 
-		console.log('Session:', session);
-
-		if (!session?.user?.address) {
+		if (!address || !chainId) {
 			return NextResponse.json(
-				{ message: '로그인이 필요합니다.' },
-				{ status: 401 }
+				{ message: '필수 파라미터가 누락되었습니다.' },
+				{ status: 400 }
 			);
 		}
 
-		const chainId = session.user.chainId;
-		const network = Network[chainIds[chainId]?.network_key as keyof typeof Network];
+		const network = Network[chainIds[Number(chainId)]?.network_key as keyof typeof Network];
 
 		if (!network) {
 			return NextResponse.json(
@@ -27,12 +23,14 @@ export async function GET() {
 			);
 		}
 
+		// alchemy 인스턴스 생성
 		const alchemy = new Alchemy({
 			apiKey: process.env.ALCHEMY_API_KEY,
 			network: network
 		});
 
-		const response = await alchemy.nft.getNftsForOwner(session.user.address);
+		// 보유 NFT 목록 조회
+		const response = await alchemy.nft.getNftsForOwner(address);
 		return NextResponse.json(
 			{ message: 'success', nfts: response.ownedNfts },
 			{ status: 200 }
