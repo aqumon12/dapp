@@ -11,9 +11,6 @@ async function getNFTs() {
 		method: 'GET',
 		headers: headerList,
 		credentials: 'include',
-		next: {
-			revalidate: 60 * 60,
-		}
 	});
 
 	if (!response.ok) {

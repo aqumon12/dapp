@@ -1,13 +1,13 @@
 import style from "./page.module.css";
 import { notFound } from "next/navigation";
 import { headers } from 'next/headers';
+import NFTSendForm from "@/components/nft-send-form";
 
 async function getNFTData(address: string, tokenId: string) {
 	const headerList = await headers();
 	const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-nft-data/${address}/${tokenId}`, {
 		headers: headerList,
 		credentials: 'include',
-		cache: 'force-cache',
 	});
 
 	if (!response.ok) {
@@ -67,10 +67,7 @@ async function NFTDetail({address, tokenId}: {address: string, tokenId: string})
 							</div>
 						</div>
 					)}
-					<div className={style.sendForm}>
-						<input type="text" placeholder="전송할 주소를 입력해주세요" />
-						<button>전송</button>
-					</div>
+					<NFTSendForm contractAddress={address} tokenId={tokenId} />
 				</div>
 			</div>
 		</section>

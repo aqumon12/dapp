@@ -12,9 +12,26 @@
 	flex: 1;
 }
 
-.sendForm>button {
+.sendForm > button {
 	color: white;
 	background-color: var(--blue);
 	border-radius: 10px;
 	padding: 0.7rem 2rem;
+}
+
+.sendForm > button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.error {
+	color: #e74c3c;
+	font-size: 0.9rem;
+	margin: 0;
+}
+
+.success {
+	color: #27ae60;
+	font-size: 0.9rem;
+	margin: 0;
 }

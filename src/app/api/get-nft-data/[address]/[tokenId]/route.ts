@@ -1,11 +1,12 @@
 import { Alchemy, Network } from 'alchemy-sdk';
 import chainIds from '@/chainList/chainIds';
 import { getServerSession } from 'next-auth';
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'; // 응답 객체
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
+// nft 상세 조회
 export async function GET(
-	_request: Request,
+	_: Request,
 	{ params }: { params: Promise<{ address: string, tokenId: string }> }
 ) {
 	try {
@@ -37,11 +38,13 @@ export async function GET(
 			);
 		}
 
+		// alchemy 인스턴스 생성
 		const alchemy = new Alchemy({
 			apiKey: process.env.ALCHEMY_API_KEY,
 			network: network
 		});
 
+		// nft 상세 조회
 		const nft = await alchemy.nft.getNftMetadata(
 			address,
 			tokenId

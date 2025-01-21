@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { ethers } from "ethers";
 import style from "./connect-metamask.module.css";
 import chainIds from "@/chainList/chainIds";
@@ -9,8 +8,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 export default function ConnectMetamask() {
 	const { data: session } = useSession();
 
-	// 메타마스크 연결
-	const getProvider = async () => {
+	const getProvider = () => {
 		const provider: ethers.BrowserProvider = new ethers.BrowserProvider(window.ethereum);
 		console.log(provider);
 		return provider;
@@ -40,10 +38,10 @@ export default function ConnectMetamask() {
 		  });
 	}
 
-	const connectWallet = useCallback(async () => {
+	const connectWallet = async () => {
 		try {
 			if (typeof window.ethereum !== "undefined") {
-				const provider = await getProvider();
+				const provider = getProvider();
 				
 				await provider.send("eth_requestAccounts", []);
 
@@ -54,6 +52,7 @@ export default function ConnectMetamask() {
 				}
 				
 
+				// 계정 
 				const signer = await provider.getSigner();
 				const message = "Sam에 로그인하세요!";
 				const signature = await signer.signMessage(message);
@@ -78,16 +77,16 @@ export default function ConnectMetamask() {
 			if (error.code === 'ACTION_REJECTED') return;
 			alert(error);
 		}
-	}, []);
+	}
 
 	const switchNetwork = async (chainId: number) => {
 		try {
-			const provider = await getProvider();
+			const provider = getProvider();
 			await provider.send("wallet_switchEthereumChain", [
 				{ chainId: `0x${chainId.toString(16)}` }
 			]);
 			
-			await connectWallet();
+			connectWallet();
 		} catch (error: any) {
 			alert('네트워크 전환에 실패했습니다. 잠시 후 다시 시도해주세요.');
 			console.error(error);
