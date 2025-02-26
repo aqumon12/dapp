@@ -7,12 +7,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function ConnectMetamask() {
 	const { data: session } = useSession();
-
 	const getProvider = () => {
 		const provider: ethers.BrowserProvider = new ethers.BrowserProvider(window.ethereum);
-		console.log(provider);
+		
 		return provider;
 	}
+	
 
 	// 메타마스크 계정 정보 조회
 	const getWalletData = async (signer: ethers.JsonRpcSigner, provider: ethers.BrowserProvider) => {
@@ -40,10 +40,11 @@ export default function ConnectMetamask() {
 
 	const connectWallet = async () => {
 		try {
+			console.log(window.ethereum);
 			if (typeof window.ethereum !== "undefined") {
 				const provider = getProvider();
-				
-				await provider.send("eth_requestAccounts", []);
+				const accounts = await provider.send("eth_requestAccounts", []);
+				console.log(accounts);
 
 				// 지원 네트워크 확인
 				const network = await provider.getNetwork();
@@ -54,6 +55,7 @@ export default function ConnectMetamask() {
 
 				// 계정 
 				const signer = await provider.getSigner();
+				console.log(signer);
 				const message = "Sam에 로그인하세요!";
 				const signature = await signer.signMessage(message);
 

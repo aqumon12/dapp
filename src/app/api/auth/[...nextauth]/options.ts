@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
 	// 세션 방식 설정
 	session: {
 		strategy: "jwt", // jwt / database
-		maxAge: 24 * 60 * 60, // 세션 만료 시간 (초)
+		maxAge: 60 * 60, // 세션 만료 시간 (초)
 	},
 
 	// 세션 콜백 함수

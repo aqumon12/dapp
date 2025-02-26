@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 // nft 상세 조회
 export async function POST(request: Request) {
 	try {
+		
 		const { address, tokenId, chainId } = await request.json();
 		
 		if (!address || !tokenId || !chainId) {
